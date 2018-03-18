@@ -1,5 +1,5 @@
 fn main() {
-    let game = Game { mistakes: 0 };;
+    let game = Game { mistakes: 10 };;
     game.run();
 }
 
@@ -9,17 +9,36 @@ struct Game {
 
 impl Game {
     fn run(&self) {
-        println!("-----------\n|       |\n|	O\n|      /|\\\n|       /\\\n|\n|");
         println!("-----------");
-        println!("| |");
+        println!("|     |");
 
         print!("|");
         if self.mistakes > 0 {
-            print!("    O");
+            print!("     O");
         }
         print!("\n|");
         if self.mistakes > 1 {
-        
+            print!("    /");
         }
+
+        if self.mistakes > 2 {
+            print!("|");
+        }
+
+        if self.mistakes > 3 {
+            print!("\\");
+        }
+
+        print!("\n|");
+
+        if self.mistakes > 4 {
+            print!("     /");
+        }
+
+        if self.mistakes > 5 {
+            print!("\\");
+        }
+        
+        print!("\n|\n|\n|");
     }
 }
