@@ -91,12 +91,28 @@ impl Game {
         print!("\n");    
     }
 
+    fn lost(&self) -> bool {
+        self.mistakes > 5
+    }
+
+    fn won(&self) -> bool {
+        let mut won = true;
+        for character in self.word.chars() {
+            if !self.guesses.contains(&character) {
+                won = false;
+                break;
+            }
+        }
+
+        won
+    }
+
     fn run(&mut self) {
        self.set_word();
 
        while !self.complete {
            self.draw();
-           if self.mistakes <= 5 {
+           if !self.lost() && !self.won() {
                println!("Guess?");
            
                let mut guess = String::new();
@@ -111,7 +127,12 @@ impl Game {
                    self.guesses.push(character);
                }
            } else {
-               println!("Game over!");
+               if self.lost() {
+                   println!("Game over!");
+               } else {
+                   println!("You won!");
+               }
+               
                self.complete = true;
            }
        }
