@@ -41,7 +41,7 @@ impl Game {
        }
     }
 
-    fn draw(&self) {
+    fn draw(&mut self) {
         println!("-----------");
         println!("|     |");
 
@@ -81,8 +81,14 @@ impl Game {
                 print!("_ ");
             }
         }
-        
-        println!("\nGuess?");
+
+        print!("\n");
+
+        for character in self.guesses.iter() {
+            print!("{}", character);
+        }
+
+        print!("\n");    
     }
 
     fn run(&mut self) {
@@ -90,11 +96,24 @@ impl Game {
 
        while !self.complete {
            self.draw();
+           if self.mistakes <= 5 {
+               println!("Guess?");
            
-           let mut guess = String::new();
-           io::stdin().read_line(&mut guess).unwrap();
-
-           self.guesses.push(guess.chars().next().unwrap());
+               let mut guess = String::new();
+               io::stdin().read_line(&mut guess).unwrap();
+               let character = guess.chars().next().unwrap();
+               
+               if !self.guesses.contains(&character) {
+                   if !self.word.contains(character) {
+                       self.mistakes += 1;
+                   }
+                   
+                   self.guesses.push(character);
+               }
+           } else {
+               println!("Game over!");
+               self.complete = true;
+           }
        }
     }
 }
