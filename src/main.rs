@@ -10,7 +10,8 @@ fn main() {
 struct Game {
     mistakes: u32,
     word: String,
-    complete: bool
+    complete: bool,
+    guesses: Vec<char>
 }
 
 impl Game {
@@ -18,7 +19,8 @@ impl Game {
         Game {
             mistakes: 0,
             word: String::from(""),
-            complete: false
+            complete: false,
+            guesses: Vec::new() 
         }
     }
 
@@ -73,7 +75,11 @@ impl Game {
         print!("\n|\n|\n|\n");
 
         for character in self.word.chars() {
-            print!("_ ");
+            if self.guesses.contains(&character) {
+                print!("{} ", character);
+            } else {
+                print!("_ ");
+            }
         }
         
         println!("\nGuess?");
@@ -87,6 +93,8 @@ impl Game {
            
            let mut guess = String::new();
            io::stdin().read_line(&mut guess).unwrap();
+
+           self.guesses.push(guess.chars().next().unwrap());
        }
     }
 }
