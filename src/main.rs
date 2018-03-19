@@ -1,17 +1,27 @@
 extern crate rand;
 use rand::Rng;
+use std::io;
 
 fn main() {
-    let mut game = Game { mistakes: 0, word: String::from("") };;
+    let mut game = Game::new();
     game.run();
 }
 
 struct Game {
     mistakes: u32,
-    word: String
+    word: String,
+    complete: bool
 }
 
 impl Game {
+    fn new() -> Game {
+        Game {
+            mistakes: 0,
+            word: String::from(""),
+            complete: false
+        }
+    }
+
     fn set_word(&mut self) {
        let num = rand::thread_rng().gen_range(0, 9); 
        self.word = match num {
@@ -66,11 +76,17 @@ impl Game {
             print!("_ ");
         }
         
-        print!("\nGuess? ");
+        println!("\nGuess?");
     }
 
     fn run(&mut self) {
        self.set_word();
-       self.draw();
+
+       while !self.complete {
+           self.draw();
+           
+           let mut guess = String::new();
+           io::stdin().read_line(&mut guess).unwrap();
+       }
     }
 }
